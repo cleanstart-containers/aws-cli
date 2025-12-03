@@ -61,14 +61,14 @@ docker pull --platform linux/arm64 cleanstart/aws-cli:latest
 ```
 
 **
-### Resources & Documentation  
-Essential links and resources for further information:
+### 
+### Resources
 
-- CleanStart Website: https://www.cleanstart.com
+- Official Documentation: https://docs.aws.amazon.com/cli/latest/userguide/
 - View Provenance, Specifications, SBOM, Signature at: https://images.cleanstart.com/images/aws-cli
+- Docker Hub: https://hub.docker.com/r/cleanstart/aws-cli
 - CleanStart All Images: https://images.cleanstart.com
-- CleanStart Community Images: https://hub.docker.com/u/cleanstart
-- Other location for Community image: https://hub.docker.com/r/cleanstart/aws-cli
+- CleanStart All Community Images: https://hub.docker.com/u/cleanstart
 
 ---
 
