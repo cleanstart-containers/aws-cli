@@ -1,25 +1,15 @@
-**CleanStart Container for AWS CLI**
+**CleanStart Container for AWS CLIOfficial AWS Command Line Interface (CLI) container image providing a unified tool to manage AWS services. This enterprise-ready container includes the latest AWS CLI v2, with support for all AWS services and commands. Features include AWS IAM authentication, S3 operations, EC2 management, and other AWS service interactions. Built on a security-hardened base image with minimal attack surface and FIPS-compliant cryptographic modules.
 
-Official AWS Command Line Interface (CLI) container image providing a unified tool to manage AWS services. This enterprise-ready container includes the latest AWS CLI v2, with support for all AWS services and commands. Features include AWS IAM authentication, S3 operations, EC2 management, and other AWS service interactions. Built on a security-hardened base image with minimal attack surface and FIPS-compliant cryptographic modules.
-
-📌 **CleanStart Foundation**: Security-hardened, minimal base OS designed for enterprise containerized environments.
-
-**Key Features**
-* Complete AWS CLI v2 functionality with all service commands
+📌 CleanStart Foundation**: Security-hardened, minimal base OS designed for enterprise containerized environments.
+ Key Features* Complete AWS CLI v2 functionality with all service commands
 * Built-in credential management and AWS IAM integration
 * Support for AWS profiles and configuration
 * FIPS 140-2 compliant cryptographic modules for secure operations
-
-**Common Use Cases**
-* Automated AWS infrastructure management and deployment
+ Common Use Cases* Automated AWS infrastructure management and deployment
 * S3 bucket operations and file transfers
 * EC2 instance management and monitoring
 * CloudFormation stack deployment and updates
-
-**Quick Start**
-
-**Pull Latest Image**
-Download the container image from the registry
+ Quick StartPull Latest ImageDownload the container image from the registry
 
 ```bash
 docker pull cleanstart/aws-cli:latest
@@ -27,17 +17,13 @@ docker pull cleanstart/aws-cli:latest
 ```bash
 docker pull cleanstart/aws-cli:latest-dev
 ```
-
-**Basic Run**
-Run the container with basic configuration
+ Basic RunRun the container with basic configuration
 
 ```bash
 docker run -it --name aws-cli-test cleanstart/aws-cli:latest-dev aws --version
 
 ```
-
-**Production Deployment**
-Deploy with production security settings
+ Production DeploymentDeploy with production security settings
 
 ```bash
 docker run -d --name aws-cli-prod \
@@ -48,37 +34,13 @@ docker run -d --name aws-cli-prod \
   cleanstart/aws-cli:latest
 ```
 
-
-**Architecture Support**
-
-**Multi-Platform Images**
-
-```bash
+ Architecture SupportMulti-Platform Images```bash
 docker pull --platform linux/amd64 cleanstart/aws-cli:latest
 ```
 ```bash
 docker pull --platform linux/arm64 cleanstart/aws-cli:latest
 ```
-
-**
-### 
-
-### Vulnerability Disclaimer
-
-CleanStart offers Docker images that include third-party open-source libraries and packages maintained by independent contributors. While CleanStart maintains these images and applies industry-standard security practices, it cannot guarantee the security or integrity of upstream components beyond its control.
-
-Users acknowledge and agree that open-source software may contain undiscovered vulnerabilities or introduce new risks through updates. CleanStart shall not be liable for security issues originating from third-party libraries, including but not limited to zero-day exploits, supply chain attacks, or contributor-introduced risks.
-
-Security remains a shared responsibility: CleanStart provides updated images and guidance where possible, while users are responsible for evaluating deployments and implementing appropriate controls.
-
-
-### Vulnerability Disclaimer
-
-CleanStart offers Docker images that include third-party open-source libraries and packages maintained by independent contributors. While CleanStart maintains these images and applies industry-standard security practices, it cannot guarantee the security or integrity of upstream components beyond its control.
-
-Users acknowledge and agree that open-source software may contain undiscovered vulnerabilities or introduce new risks through updates. CleanStart shall not be liable for security issues originating from third-party libraries, including but not limited to zero-day exploits, supply chain attacks, or contributor-introduced risks.
-
-Security remains a shared responsibility: CleanStart provides updated images and guidance where possible, while users are responsible for evaluating deployments and implementing appropriate controls.
+ ###
 
 ### Resources
 
@@ -87,3 +49,11 @@ Security remains a shared responsibility: CleanStart provides updated images and
 - Docker Hub: https://hub.docker.com/r/cleanstart/aws-cli
 - CleanStart All Images: https://images.cleanstart.com
 - CleanStart All Community Images: https://hub.docker.com/u/cleanstart
+
+### Vulnerability Disclaimer
+
+CleanStart offers Docker images that include third-party open-source libraries and packages maintained by independent contributors. While CleanStart maintains these images and applies industry-standard security practices, it cannot guarantee the security or integrity of upstream components beyond its control.
+
+Users acknowledge and agree that open-source software may contain undiscovered vulnerabilities or introduce new risks through updates. CleanStart shall not be liable for security issues originating from third-party libraries, including but not limited to zero-day exploits, supply chain attacks, or contributor-introduced risks.
+
+Security remains a shared responsibility: CleanStart provides updated images and guidance where possible, while users are responsible for evaluating deployments and implementing appropriate controls.
