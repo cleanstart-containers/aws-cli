@@ -1,30 +1,84 @@
-- *CleanStart Container for AWS CLIOfficial AWS Command Line Interface (CLI) container image providing a unified tool to manage AWS services. This enterprise-ready container includes the latest AWS CLI v2, with support for all AWS services and commands. Features include AWS IAM authentication, S3 operations, EC2 management, and other AWS service interactions. Built on a security-hardened base image with minimal attack surface and FIPS-compliant cryptographic modules.
+# CleanStart Container for AWS CLI
 
-📌 CleanStart Foundation**: Security-hardened, minimal base OS designed for enterprise containerized environments.
- Key Features* Complete AWS CLI v2 functionality with all service commands
+Official AWS Command Line Interface (CLI) container image providing a unified tool to manage AWS services. This enterprise-ready container includes the latest AWS CLI v2, with support for all AWS services and commands. Features include AWS IAM authentication, S3 operations, EC2 management, and other AWS service interactions. Built on a security-hardened base image with minimal attack surface and FIPS-compliant cryptographic modules.
+
+**📌 CleanStart Foundation:** Security-hardened, minimal base OS designed for enterprise containerized environments.
+
+**Image Path:** `cleanstart/aws-cli`
+
+**Registry:** CleanStart Registry
+
+---
+
+## Overview
+
+The AWS CLI (Command Line Interface) is a unified tool to manage AWS services from the command line. This CleanStart container provides AWS CLI v2 with comprehensive functionality for interacting with all AWS services, built on a security-hardened foundation optimized for enterprise deployments.
+
+---
+
+## Key Features
+
+Core capabilities and strengths of this container:
+
+- Complete AWS CLI v2 functionality with all service commands
 - Built-in credential management and AWS IAM integration
 - Support for AWS profiles and configuration
 - FIPS 140-2 compliant cryptographic modules for secure operations
- Common Use Cases* Automated AWS infrastructure management and deployment
+- Security-hardened base image
+- Minimal attack surface
+- Enterprise-ready configuration
+
+---
+
+## Common Use Cases
+
+Typical scenarios where this container excels:
+
+- Automated AWS infrastructure management and deployment
 - S3 bucket operations and file transfers
 - EC2 instance management and monitoring
 - CloudFormation stack deployment and updates
- Quick StartPull Latest ImageDownload the container image from the registry
+- Lambda function deployment and management
+- AWS resource automation in CI/CD pipelines
+- Multi-account AWS operations
+- Infrastructure as Code deployments
 
+---
+
+## Quick Start
+
+### Pull Latest Image
+
+Download the container image from the registry:
 ```bash
 docker pull cleanstart/aws-cli:latest
 ```
 ```bash
 docker pull cleanstart/aws-cli:latest-dev
 ```
- Basic RunRun the container with basic configuration
 
+### Basic Run
+
+Run the container with basic configuration:
 ```bash
 docker run -it --name aws-cli-test cleanstart/aws-cli:latest-dev aws --version
-
 ```
- Production DeploymentDeploy with production security settings
 
+### Check AWS CLI Version
+```bash
+docker run --rm cleanstart/aws-cli:latest-dev aws --version
+```
+
+### Run AWS Commands
+```bash
+docker run --rm \
+  -v ~/.aws:/home/aws/.aws:ro \
+  cleanstart/aws-cli:latest-dev aws s3 ls
+```
+
+### Production Deployment
+
+Deploy with production security settings:
 ```bash
 docker run -d --name aws-cli-prod \
   --read-only \
@@ -34,26 +88,78 @@ docker run -d --name aws-cli-prod \
   cleanstart/aws-cli:latest
 ```
 
- Architecture SupportMulti-Platform Images```bash
+### Interactive Shell
+```bash
+docker run -it --rm \
+  -v ~/.aws:/home/aws/.aws:ro \
+  cleanstart/aws-cli:latest-dev /bin/sh
+```
+
+---
+
+## Configuration
+
+### AWS Credentials
+
+Mount your AWS credentials directory:
+```bash
+-v ~/.aws:/home/aws/.aws:ro
+```
+
+### Environment Variables
+
+You can also pass AWS credentials via environment variables:
+```bash
+docker run --rm \
+  -e AWS_ACCESS_KEY_ID=your-access-key \
+  -e AWS_SECRET_ACCESS_KEY=your-secret-key \
+  -e AWS_DEFAULT_REGION=us-east-1 \
+  cleanstart/aws-cli:latest-dev aws s3 ls
+```
+
+### AWS Profiles
+
+Use specific AWS profiles:
+```bash
+docker run --rm \
+  -v ~/.aws:/home/aws/.aws:ro \
+  cleanstart/aws-cli:latest-dev aws s3 ls --profile production
+```
+
+---
+
+## Architecture Support
+
+CleanStart images support multiple architectures to ensure compatibility across different deployment environments:
+
+- **AMD64**: Intel and AMD x86-64 processors
+- **ARM64**: ARM-based processors including Apple Silicon and ARM servers
+
+### Multi-Platform Images
+```bash
 docker pull --platform linux/amd64 cleanstart/aws-cli:latest
 ```
 ```bash
 docker pull --platform linux/arm64 cleanstart/aws-cli:latest
 ```
- ###
+
+---
 
 ## Resources
 
 - **Official Documentation:** https://docs.aws.amazon.com/cli/latest/userguide/
+- **AWS CLI Command Reference:** https://docs.aws.amazon.com/cli/latest/reference/
 - **Provenance / SBOM / Signature:** https://images.cleanstart.com/images/aws-cli
 - **Docker Hub:** https://hub.docker.com/r/cleanstart/aws-cli
 - **CleanStart All Images:** https://images.cleanstart.com
 - **CleanStart Community Images:** https://hub.docker.com/u/cleanstart
 
-### Vulnerability Disclaimer
+---
+
+## Vulnerability Disclaimer
 
 CleanStart offers Docker images that include third-party open-source libraries and packages maintained by independent contributors. While CleanStart maintains these images and applies industry-standard security practices, it cannot guarantee the security or integrity of upstream components beyond its control.
 
 Users acknowledge and agree that open-source software may contain undiscovered vulnerabilities or introduce new risks through updates. CleanStart shall not be liable for security issues originating from third-party libraries, including but not limited to zero-day exploits, supply chain attacks, or contributor-introduced risks.
 
-Security remains a shared responsibility: CleanStart provides updated images and guidance where possible, while users are responsible for evaluating deployments and implementing appropriate controls.
+**Security remains a shared responsibility:** CleanStart provides updated images and guidance where possible, while users are responsible for evaluating deployments and implementing appropriate controls.
