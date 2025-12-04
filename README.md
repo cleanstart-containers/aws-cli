@@ -4,7 +4,7 @@ Official AWS Command Line Interface (CLI) container image providing a unified to
 
 **📌 CleanStart Foundation:** Security-hardened, minimal base OS designed for enterprise containerized environments.
 
-**Image Path:** `cleanstart/aws-cli`
+**Image Path:** `ghcr.io/cleanstart-containers/aws-cli`
 
 **Registry:** CleanStart Registry
 
@@ -51,29 +51,29 @@ Typical scenarios where this container excels:
 
 Download the container image from the registry:
 ```bash
-docker pull cleanstart/aws-cli:latest
+docker pull ghcr.io/cleanstart-containers/aws-cli:latest
 ```
 ```bash
-docker pull cleanstart/aws-cli:latest-dev
+docker pull ghcr.io/cleanstart-containers/aws-cli:latest-dev
 ```
 
 ### Basic Run
 
 Run the container with basic configuration:
 ```bash
-docker run -it --name aws-cli-test cleanstart/aws-cli:latest-dev aws --version
+docker run -it --name aws-cli-test ghcr.io/cleanstart-containers/aws-cli:latest-dev aws --version
 ```
 
 ### Check AWS CLI Version
 ```bash
-docker run --rm cleanstart/aws-cli:latest-dev aws --version
+docker run --rm ghcr.io/cleanstart-containers/aws-cli:latest-dev aws --version
 ```
 
 ### Run AWS Commands
 ```bash
 docker run --rm \
   -v ~/.aws:/home/aws/.aws:ro \
-  cleanstart/aws-cli:latest-dev aws s3 ls
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev aws s3 ls
 ```
 
 ### Production Deployment
@@ -85,14 +85,14 @@ docker run -d --name aws-cli-prod \
   --security-opt=no-new-privileges \
   --user 1000:1000 \
   -v ~/.aws:/home/aws/.aws:ro \
-  cleanstart/aws-cli:latest
+  ghcr.io/cleanstart-containers/aws-cli:latest
 ```
 
 ### Interactive Shell
 ```bash
 docker run -it --rm \
   -v ~/.aws:/home/aws/.aws:ro \
-  cleanstart/aws-cli:latest-dev /bin/sh
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev /bin/sh
 ```
 
 ---
@@ -114,7 +114,7 @@ docker run --rm \
   -e AWS_ACCESS_KEY_ID=your-access-key \
   -e AWS_SECRET_ACCESS_KEY=your-secret-key \
   -e AWS_DEFAULT_REGION=us-east-1 \
-  cleanstart/aws-cli:latest-dev aws s3 ls
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev aws s3 ls
 ```
 
 ### AWS Profiles
@@ -123,7 +123,7 @@ Use specific AWS profiles:
 ```bash
 docker run --rm \
   -v ~/.aws:/home/aws/.aws:ro \
-  cleanstart/aws-cli:latest-dev aws s3 ls --profile production
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev aws s3 ls --profile production
 ```
 
 ---
@@ -137,10 +137,10 @@ CleanStart images support multiple architectures to ensure compatibility across 
 
 ### Multi-Platform Images
 ```bash
-docker pull --platform linux/amd64 cleanstart/aws-cli:latest
+docker pull --platform linux/amd64 ghcr.io/cleanstart-containers/aws-cli:latest
 ```
 ```bash
-docker pull --platform linux/arm64 cleanstart/aws-cli:latest
+docker pull --platform linux/arm64 ghcr.io/cleanstart-containers/aws-cli:latest
 ```
 
 ---
