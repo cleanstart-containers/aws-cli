@@ -61,19 +61,19 @@ docker pull ghcr.io/cleanstart-containers/aws-cli:latest-dev
 
 Run the container with basic configuration:
 ```bash
-docker run -it --name aws-cli-test ghcr.io/cleanstart-containers/aws-cli:latest-dev aws --version
+docker run -it --name aws-cli-test ghcr.io/cleanstart-containers/aws-cli:latest-dev --version
 ```
 
 ### Check AWS CLI Version
 ```bash
-docker run --rm ghcr.io/cleanstart-containers/aws-cli:latest-dev aws --version
+docker run --rm ghcr.io/cleanstart-containers/aws-cli:latest-dev --version
 ```
 
 ### Run AWS Commands
 ```bash
 docker run --rm \
   -v ~/.aws:/home/aws/.aws:ro \
-  ghcr.io/cleanstart-containers/aws-cli:latest-dev aws s3 ls
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev s3 ls
 ```
 
 ### Production Deployment
@@ -92,7 +92,8 @@ docker run -d --name aws-cli-prod \
 ```bash
 docker run -it --rm \
   -v ~/.aws:/home/aws/.aws:ro \
-  ghcr.io/cleanstart-containers/aws-cli:latest-dev /bin/sh
+  --entrypoint /bin/sh
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev
 ```
 
 ---
@@ -114,7 +115,7 @@ docker run --rm \
   -e AWS_ACCESS_KEY_ID=your-access-key \
   -e AWS_SECRET_ACCESS_KEY=your-secret-key \
   -e AWS_DEFAULT_REGION=us-east-1 \
-  ghcr.io/cleanstart-containers/aws-cli:latest-dev aws s3 ls
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev s3 ls
 ```
 
 ### AWS Profiles
@@ -123,7 +124,7 @@ Use specific AWS profiles:
 ```bash
 docker run --rm \
   -v ~/.aws:/home/aws/.aws:ro \
-  ghcr.io/cleanstart-containers/aws-cli:latest-dev aws s3 ls --profile production
+  ghcr.io/cleanstart-containers/aws-cli:latest-dev s3 ls --profile production
 ```
 
 ---
