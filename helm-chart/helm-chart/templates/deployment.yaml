@@ -1,0 +1,185 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aws-cli.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aws-cli.labels" . | nindent 4 }}
+    {{- with .Values.labels.deployment }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aws-cli.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "aws-cli.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.security.pod }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets }}
+      - name: {{ .name }}
+      {{- end }}
+      {{- end }}
+
+      {{- if .Values.volumes }}
+      volumes:
+      {{- range $name, $vol := .Values.volumes }}
+      - name: {{ $vol.name }}
+        {{- if eq $vol.type "configMap" }}
+        configMap:
+          name: {{ include "aws-cli.fullname" $ }}-config
+        {{- else if eq $vol.type "emptyDir" }}
+        {{- if $vol.emptyDir }}
+        emptyDir:
+          {{- toYaml $vol.emptyDir | nindent 10 }}
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
+        {{- else if eq $vol.type "hostPath" }}
+        hostPath:
+          {{- toYaml $vol.hostPath | nindent 10 }}
+        {{- end }}
+      {{- end }}
+      {{- end }}
+
+      {{- if and .Values.initContainer.enabled (ne .Values.initContainer.command "") }}
+      initContainers:
+      - name: {{ .Values.initContainer.name }}
+        image: {{ include "aws-cli.initImage" . }}
+        command:
+        - /bin/sh
+        - -c
+        args:
+        - {{ .Values.initContainer.command | quote }}
+        {{- if .Values.initContainer.volumeMounts }}
+        volumeMounts:
+          {{- toYaml .Values.initContainer.volumeMounts | nindent 8 }}
+        {{- end }}
+        {{- if .Values.security.container }}
+        securityContext:
+          {{- toYaml .Values.security.container | nindent 10 }}
+        {{- end }}
+      {{- end }}
+
+      containers:
+      - name: {{ .Values.app.name }}
+        image: {{ include "aws-cli.image" . }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if .Values.container.command }}
+        command:
+          {{- toYaml .Values.container.command | nindent 10 }}
+        {{- end }}
+        {{- if .Values.container.args }}
+        args:
+          {{- toYaml .Values.container.args | nindent 10 }}
+        {{- end }}
+        {{- if .Values.container.ports }}
+        ports:
+          {{- toYaml .Values.container.ports | nindent 10 }}
+        {{- end }}
+        {{- if .Values.container.env }}
+        env:
+        {{- range $key, $value := .Values.container.env }}
+        - name: {{ $key }}
+          {{- if eq $value "__DYNAMIC_FULLNAME__" }}
+          value: {{ include "aws-cli.fullname" $ | quote }}
+          {{- else }}
+          value: {{ $value | quote }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.resources }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        {{- end }}
+        {{- if .Values.probes.readiness.enabled }}
+        readinessProbe:
+          {{- $probe := .Values.probes.readiness }}
+          {{- range $key, $value := $probe }}
+          {{- if ne $key "enabled" }}
+          {{ $key }}: {{ $value | toYaml | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.probes.liveness.enabled }}
+        livenessProbe:
+          {{- $probe := .Values.probes.liveness }}
+          {{- range $key, $value := $probe }}
+          {{- if ne $key "enabled" }}
+          {{ $key }}: {{ $value | toYaml | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.security.container }}
+        securityContext:
+          {{- toYaml .Values.security.container | nindent 10 }}
+        {{- end }}
+        {{- if .Values.volumeMounts }}
+        volumeMounts:
+        {{- range $key, $vm := .Values.volumeMounts }}
+        - name: {{ $vm.name }}
+          mountPath: {{ $vm.mountPath }}
+          {{- if ne $vm.subPath "" }}
+          subPath: {{ $vm.subPath }}
+          {{- end }}
+          {{- if $vm.readOnly }}
+          readOnly: {{ $vm.readOnly }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+
+      {{- if .Values.testSidecar.enabled }}
+      - name: {{ .Values.testSidecar.name }}
+        image: {{ include "aws-cli.sidecarImage" . }}
+        command: ["sleep", "infinity"]
+        {{- if .Values.testSidecar.resources }}
+        resources:
+          {{- toYaml .Values.testSidecar.resources | nindent 10 }}
+        {{- end }}
+        env:
+        - name: SIDECAR_ROLE
+          value: "testing"
+        - name: TARGET_APPLICATION
+          value: {{ .Values.app.name | quote }}
+        - name: FIPS_MODE
+          value: {{ .Values.fips.mode | quote }}
+        {{- if .Values.testSidecar.env }}
+        {{- range $key, $value := .Values.testSidecar.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.security.container }}
+        securityContext:
+          {{- toYaml .Values.security.container | nindent 10 }}
+        {{- end }}
+        {{- if .Values.volumeMounts }}
+        volumeMounts:
+        {{- range $key, $vm := .Values.volumeMounts }}
+        {{- if and (eq $vm.subPath "") (ne $vm.name "tmp-volume") }}
+        - name: {{ $vm.name }}
+          mountPath: {{ $vm.mountPath }}
+          readOnly: true
+        {{- end }}
+        {{- end }}
+        {{- if .Values.volumes }}
+        {{- range $name, $vol := .Values.volumes }}
+        {{- if eq $name "tmp-volume" }}
+        - name: tmp-volume
+          mountPath: /tmp
+        {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- end }}
+      {{- end }}
+
+      restartPolicy: Always
