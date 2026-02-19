@@ -1,0 +1,18 @@
+{{- if .Values.service.clusterIP.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.clusterIP.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aws-cli.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.clusterIP.type }}
+  ports:
+    - port: {{ .Values.service.clusterIP.port }}
+      targetPort: {{ .Values.service.clusterIP.targetPort }}
+      protocol: {{ .Values.service.clusterIP.protocol }}
+      name: http
+  selector:
+    {{- include "aws-cli.selectorLabels" . | nindent 4 }}
+{{- end }}

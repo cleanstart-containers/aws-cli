@@ -1,0 +1,133 @@
+app:
+  name: aws-cli
+  type: application
+  component: container
+  tier: application
+fullnameOverride: ''
+nameOverride: ''
+image:
+  registry: docker.io
+  project: cleanstart
+  repository: ''
+  name: aws-cli
+  tag: latest
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+testSidecar:
+  enabled: true
+  name: sidecar
+  image:
+    registry: docker.io
+    project: library
+    repository: ''
+    name: busybox
+    tag: latest
+  resources:
+    requests:
+      memory: 32Mi
+      cpu: 25m
+    limits:
+      memory: 64Mi
+      cpu: 50m
+  env:
+    APPLICATION_NAME: aws-cli
+    APPLICATION_VERSION: 2.31.25
+initContainer:
+  enabled: false
+  name: init
+  command: ''
+  volumeMounts: []
+container:
+  command: []
+  args: []
+  env:
+    AWS_CLI_VERSION: 2.31.25
+    AWS_DEFAULT_REGION: us-east-1
+    AWS_DEFAULT_OUTPUT: json
+  ports: []
+resources:
+  requests:
+    memory: 32Mi
+    cpu: 25m
+  limits:
+    memory: 64Mi
+    cpu: 50m
+security:
+  pod: {}
+  container:
+    runAsNonRoot: false
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: false
+service:
+  clusterIP:
+    enabled: true
+    name: aws-cli-service
+    type: ClusterIP
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  nodePort:
+    enabled: true
+    name: aws-cli-nodeport
+    type: NodePort
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+probes:
+  readiness:
+    enabled: false
+  liveness:
+    enabled: false
+volumes:
+  aws-config:
+    enabled: true
+    name: aws-config
+    type: configMap
+    configMapName: aws-cli-config
+  tmp-volume:
+    enabled: true
+    name: tmp-volume
+    type: emptyDir
+    emptyDir: {}
+volumeMounts:
+  aws-config-root:
+    name: aws-config
+    mountPath: /etc/aws-cli
+    readOnly: true
+    subPath: ''
+  tmp-volume-root:
+    name: tmp-volume
+    mountPath: /tmp
+    readOnly: false
+    subPath: ''
+configMap:
+  enabled: true
+  data:
+    application.type: aws-cli
+    application.version: 2.31.25
+    aws-cli.conf: |
+      # AWS CLI Configuration
+      application_type=aws-cli
+      application_version=2.31.25
+      default_region=us-east-1
+      default_output=json
+fips:
+  enabled: false
+  mode: disabled
+labels:
+  common:
+    app: aws-cli
+    version: 2.31.25
+    framework: enhanced-container-testing-v4.2.1
+  deployment:
+    app: aws-cli
+    version: 2.31.25
+    category: utility
+    framework: enhanced-container-testing-v4.2.1
+replicaCount: 1
+namespace:
+  create: false
+  name: aws-cli

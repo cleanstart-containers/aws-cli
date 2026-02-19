@@ -1,0 +1,18 @@
+apiVersion: v2
+name: aws-cli
+description: Sidecar-pattern Helm chart for aws-cli container testing
+type: application
+version: 1.0.0
+appVersion: 2.31.25
+keywords:
+- aws-cli
+- container-testing
+- qa
+- sidecar-pattern
+maintainers:
+- name: CleanStart Container Testing Team
+- name: Runtime QA
+annotations:
+  framework.version: 4.2.1
+  deployment.pattern: sidecar
+  testing.framework: enhanced-container-testing
