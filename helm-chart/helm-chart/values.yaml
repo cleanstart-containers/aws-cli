@@ -18,9 +18,9 @@ testSidecar:
   name: sidecar
   image:
     registry: docker.io
-    project: library
+    project: amazon
     repository: ''
-    name: busybox
+    name: aws-cli
     tag: latest
   resources:
     requests:
@@ -38,6 +38,9 @@ initContainer:
   command: ''
   volumeMounts: []
 container:
+  # Minimal image is ENTRYPOINT-only and designed for one-shot execution
+  # Leave empty to let image's default CMD run (sleep infinity from Dockerfile)
+  # To use for specific AWS command, set: command: ["aws", "s3", "ls"]
   command: []
   args: []
   env:

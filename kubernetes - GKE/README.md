@@ -14,11 +14,6 @@ This basic project shows how to run the CleanStart `aws-cli` container in GKE us
 
 ## Steps
 
-### 0) Connect to your GKE cluster
-```bash
-gcloud container clusters get-credentials <cluster-name> --zone <zone>
-```
-
 ### 1) Create namespace
 ```bash
 kubectl apply -f namespace.yaml
@@ -38,7 +33,7 @@ kubectl apply -f job.yaml -n aws-cli-app
 
 Check Job and logs:
 ```bash
-kubectl get jobs -n aws-cli-app
+kubectl get jobs -n aws-cli-app -w
 POD=$(kubectl get pods -n aws-cli-app -l job-name=aws-cli-job -o jsonpath='{.items[0].metadata.name}')
 kubectl logs -n aws-cli-app $POD
 ```
@@ -47,7 +42,7 @@ kubectl logs -n aws-cli-app $POD
 Override the command at apply time:
 ```bash
 kubectl create job aws-cli-list-s3 -n aws-cli-app \
-  --image=cleanstart/aws-cli:latest \
+  --image=cleanstart/aws-cli:latest-dev \
   -- aws s3 ls
 ```
 
