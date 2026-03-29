@@ -152,7 +152,7 @@ docker pull --platform linux/arm64 ghcr.io/cleanstart-containers/aws-cli:latest
 - **AWS CLI Command Reference:** https://docs.aws.amazon.com/cli/latest/reference/
 - **Provenance / SBOM / Signature:** https://images.cleanstart.com/images/aws-cli
 - **Docker Hub:** https://hub.docker.com/r/cleanstart/aws-cli
-- **CleanStart All Images:** https://images.cleanstart.com
+- **CleanStart All Images:** https://images.cleanstart.com/images/aws-cli/details
 - **CleanStart Community Images:** https://hub.docker.com/u/cleanstart
 
 ---
